@@ -1,11 +1,13 @@
 import { Router } from 'express';
 
-import usersRouter from './user.routes';
+import fundosRouter from './fundos.routes';
+import userRouter from './user.routes';
 import assessoresRouter from './assessores.routes';
 
 const routes = Router();
 
-routes.use('/users', usersRouter);
+routes.use('/fundos', fundosRouter);
+routes.use('/users', userRouter);
 routes.use('/assessores', assessoresRouter);
 
 export default routes;
