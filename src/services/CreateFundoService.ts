@@ -1,5 +1,7 @@
 import { getRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
+
 import validaCNPJ from '../utils/validaCNPJ';
 
 import Fundo from '../entities/Fundo';
@@ -17,15 +19,15 @@ class CreateFundoService {
     rendimentoAnual,
   }: IRequest): Promise<Fundo> {
     if (nome.length < 3 && nome.length <= 200) {
-      throw new Error('Nome do fundo deve possuir de 3 a 200 caractéres.');
+      throw new AppError('Nome do fundo deve possuir de 3 a 200 caractéres.');
     }
 
     if (!validaCNPJ(cnpj)) {
-      throw new Error('CNPJ inválido.');
+      throw new AppError('CNPJ inválido.');
     }
 
     if (rendimentoAnual < 0) {
-      throw new Error('Rendimento atual deve ser maior que zero.');
+      throw new AppError('Rendimento atual deve ser maior que zero.');
     }
 
     const fundoRepository = getRepository(Fundo);

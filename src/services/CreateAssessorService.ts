@@ -2,6 +2,8 @@ import { getRepository } from 'typeorm';
 import User from '../entities/User';
 import Assessor from '../entities/Assessor';
 
+import AppError from '../errors/AppError';
+
 interface IRequest {
   nome: string;
   userId: number;
@@ -19,7 +21,7 @@ class CreateAssessorService {
     });
 
     if (!user) {
-      throw new Error('Usuário não cadastrado.');
+      throw new AppError('Usuário não cadastrado.');
     }
 
     const userInUseByAssessor = await assessoresRepository.findOne({
@@ -29,7 +31,7 @@ class CreateAssessorService {
     });
 
     if (userInUseByAssessor) {
-      throw new Error('Usuário já utilizado por outro assessor.');
+      throw new AppError('Usuário já utilizado por outro assessor.', 409);
     }
 
     const assessor = assessoresRepository.create({

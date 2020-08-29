@@ -3,10 +3,13 @@ import { verify } from 'jsonwebtoken';
 
 import authConfig from '../config/auth';
 
-interface TokenPayload {
+import AppError from '../errors/AppError';
+
+interface ITokenPayload {
   iat: number;
   exp: number;
   sub: string;
+  assessorId: number;
 }
 
 export default function ensureAuthenticated(
@@ -17,7 +20,7 @@ export default function ensureAuthenticated(
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new Error('Token JWT não identificado.');
+    throw new AppError('Token JWT não identificado.', 401);
   }
 
   const [, token] = authHeader.split(' ');
@@ -25,16 +28,18 @@ export default function ensureAuthenticated(
   try {
     const decoded = verify(token, authConfig.jwt.secret);
 
-    console.log(decoded);
-
-    const { sub } = decoded as TokenPayload;
+    const { sub, assessorId } = decoded as ITokenPayload;
 
     request.user = {
       id: sub,
     };
 
+    request.assessor = {
+      id: assessorId,
+    };
+
     return next();
   } catch {
-    throw new Error('Token JWT inválido.');
+    throw new AppError('Token JWT inválido.', 401);
   }
 }
