@@ -20,6 +20,7 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
       .json({ status: 'error', message: err.message });
   }
 
+  // eslint-disable-next-line no-console
   console.log(err);
 
   return response

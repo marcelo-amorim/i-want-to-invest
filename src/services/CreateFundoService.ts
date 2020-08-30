@@ -22,7 +22,8 @@ class CreateFundoService {
       throw new AppError('Nome do fundo deve possuir de 3 a 200 caractéres.');
     }
 
-    if (!validaCNPJ(cnpj)) {
+    const formattedCNPJ = cnpj.replace(/[^\d]+/g, '');
+    if (!validaCNPJ(formattedCNPJ)) {
       throw new AppError('CNPJ inválido.');
     }
 

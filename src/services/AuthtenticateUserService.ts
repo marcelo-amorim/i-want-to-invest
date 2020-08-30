@@ -39,11 +39,16 @@ class AuthenticateUserService {
       throw new AppError('Usuário e senha incorretos', 401);
     }
 
+    // const roles = [];
     const assessor = await assessoresRepository.findOne({
       where: {
         userId: user.id,
       },
     });
+
+    // if (assessor) {
+    //   roles.push('ASSESSOR');
+    // }
 
     const { secret, expiresIn } = authConfig.jwt;
 
