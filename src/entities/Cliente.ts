@@ -29,6 +29,7 @@ class Cliente {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
+  @Column()
   @OneToOne(() => Assessor)
   @JoinColumn({ name: 'assessor_id' })
   assessorId: number;

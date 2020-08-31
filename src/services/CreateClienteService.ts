@@ -13,7 +13,7 @@ interface IRequest {
   assessorId: number;
 }
 
-class CreateCliente {
+class CreateClienteService {
   public async execute({
     nome,
     cpf,
@@ -68,4 +68,4 @@ class CreateCliente {
   }
 }
 
-export default CreateCliente;
+export default CreateClienteService;

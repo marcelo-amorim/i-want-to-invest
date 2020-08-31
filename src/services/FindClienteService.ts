@@ -1,13 +1,12 @@
 import { getRepository } from 'typeorm';
 import Cliente from '../entities/Cliente';
-import AppError from '../errors/AppError';
 
 interface IRequest {
   id?: number;
   assessorId: number;
 }
 
-class FindClientes {
+class FindClienteService {
   public async execute({
     id,
     assessorId,
@@ -31,4 +30,4 @@ class FindClientes {
   }
 }
 
-export default FindClientes;
+export default FindClienteService;
