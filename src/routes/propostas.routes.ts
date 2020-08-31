@@ -3,7 +3,6 @@ import { getCustomRepository } from 'typeorm';
 
 import CreatePropostaService from '../services/CreatePropostaService';
 
-import Proposta from '../entities/Proposta';
 import PropostasRepository from '../repositories/PropostasRepository';
 
 const propostasRouter = Router();
