@@ -1,6 +1,9 @@
 import { Router } from 'express';
-import FindClientesService from '../services/FindClienteService';
+import { getCustomRepository } from 'typeorm';
+
 import CreateClienteService from '../services/CreateClienteService';
+
+import ClientesRepository from '../repositories/ClientesRepository';
 
 const clientesRouter = Router();
 
@@ -8,8 +11,20 @@ clientesRouter.get('/:id?', async (request, response) => {
   const clienteId = Number(request.params.id);
   const { id: assessorId } = request.assessor;
 
-  const findClientes = new FindClientesService();
-  const clientes = await findClientes.execute({ id: clienteId, assessorId });
+  const clientesRepository = getCustomRepository(ClientesRepository);
+
+  if (clienteId) {
+    const cliente = await clientesRepository.findOneByAssessor(
+      clienteId,
+      assessorId,
+    );
+    return response.json(cliente);
+  }
+
+  const clientes = await clientesRepository.getAllClientesByAssessor(
+    assessorId,
+  );
+
   return response.json(clientes);
 });
 
