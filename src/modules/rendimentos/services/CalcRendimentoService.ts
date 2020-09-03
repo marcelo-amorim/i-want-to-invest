@@ -1,3 +1,5 @@
+import { injectable, inject } from 'tsyringe';
+
 import AppError from '@shared/errors/AppError';
 import IPropostasRepository from '@modules/propostas/repositories/IPropostasRepository';
 
@@ -14,8 +16,12 @@ interface IRendimento {
   valor: number;
 }
 
+@injectable()
 class CalcRendimentoService {
-  constructor(private propostasRepository: IPropostasRepository) {}
+  constructor(
+    @inject('PropostasRepository')
+    private propostasRepository: IPropostasRepository,
+  ) {}
 
   public async execute({
     dataInicial,

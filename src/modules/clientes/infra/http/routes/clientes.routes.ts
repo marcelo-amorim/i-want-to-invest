@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { container } from 'tsyringe';
 
 import ClientesRepository from '@modules/clientes/infra/typeorm/repositories/ClientesRepository';
 import CreateClienteService from '@modules/clientes/services/CreateClienteService';
@@ -26,11 +27,10 @@ clientesRouter.get('/:id?', async (request, response) => {
 });
 
 clientesRouter.post('/', async (request, response) => {
-  const clientesRepository = new ClientesRepository();
   const { id: assessorId } = request.assessor;
   const { nome, cpf, email } = request.body;
 
-  const createCliente = new CreateClienteService(clientesRepository);
+  const createCliente = container.resolve(CreateClienteService);
 
   const cliente = await createCliente.execute({ nome, cpf, email, assessorId });
 

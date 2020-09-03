@@ -1,15 +1,13 @@
 import { Router } from 'express';
-
-import CreatePropostaService from '@modules/propostas/services/CreatePropostaService';
+import { container } from 'tsyringe';
 
 import PropostasRepository from '@modules/propostas/infra/typeorm/repositories/PropostasRepository';
-import FundosRepository from '@modules/fundos/infra/typeorm/repositories/FundosRepository';
-import ClientesRepository from '@modules/clientes/infra/typeorm/repositories/ClientesRepository';
+import CreatePropostaService from '@modules/propostas/services/CreatePropostaService';
 
 const propostasRouter = Router();
 
 propostasRouter.get('/:codigo', async (request, response) => {
-  const propostasRepository = new PropostasRepository();
+  const propostasRepository = container.resolve(PropostasRepository);
   const { id: assessorId } = request.assessor;
   const { codigo } = request.params;
 
@@ -22,18 +20,10 @@ propostasRouter.get('/:codigo', async (request, response) => {
 });
 
 propostasRouter.post('/', async (request, response) => {
-  const propostasRepository = new PropostasRepository();
-  const fundosRepository = new FundosRepository();
-  const clientesRepository = new ClientesRepository();
-
   const { id: assessorId } = request.assessor;
   const { valor, tipoPagamento, fundoId, clienteId } = request.body;
 
-  const createProposta = new CreatePropostaService(
-    fundosRepository,
-    clientesRepository,
-    propostasRepository,
-  );
+  const createProposta = container.resolve(CreatePropostaService);
 
   const proposta = await createProposta.execute({
     valor,

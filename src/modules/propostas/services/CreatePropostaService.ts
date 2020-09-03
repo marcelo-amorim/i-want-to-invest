@@ -1,3 +1,5 @@
+import { injectable, inject } from 'tsyringe';
+
 import AppError from '@shared/errors/AppError';
 
 import Proposta from '@modules/propostas/infra/typeorm/entities/Proposta';
@@ -14,10 +16,16 @@ interface IRequest {
   assessorId: number;
 }
 
+@injectable()
 class CreatePropostaService {
   constructor(
+    @inject('FundosRepository')
     private fundosRepository: IFundosRepository,
+
+    @inject('ClientesRepository')
     private clientesRepository: IClientesRepository,
+
+    @inject('PropostasRepository')
     private propostasRepository: IPropostasRepository,
   ) {}
 

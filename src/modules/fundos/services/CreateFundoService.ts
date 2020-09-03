@@ -1,3 +1,5 @@
+import { injectable, inject } from 'tsyringe';
+
 import AppError from '@shared/errors/AppError';
 
 import validaCNPJ from '@shared/utils/validaCNPJ';
@@ -11,8 +13,12 @@ interface IRequest {
   rendimentoAnual: number;
 }
 
+@injectable()
 class CreateFundoService {
-  constructor(private fundosRepository: IFundosRepository) {}
+  constructor(
+    @inject('FundosRepository')
+    private fundosRepository: IFundosRepository,
+  ) {}
 
   public async execute({
     cnpj,

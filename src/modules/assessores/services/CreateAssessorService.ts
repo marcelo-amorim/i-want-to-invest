@@ -1,3 +1,5 @@
+import { injectable, inject } from 'tsyringe';
+
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 import AppError from '@shared/errors/AppError';
@@ -10,9 +12,13 @@ interface IRequest {
   userId: number;
 }
 
+@injectable()
 class CreateAssessorService {
   constructor(
+    @inject('AssessoresRepository')
     private assessoresRepository: IAssessorRepository,
+
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
   ) {}
 

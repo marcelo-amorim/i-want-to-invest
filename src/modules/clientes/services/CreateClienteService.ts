@@ -1,3 +1,5 @@
+import { injectable, inject } from 'tsyringe';
+
 import validaCPF from '@shared/utils/validaCPF';
 import validaEmail from '@shared/utils/validaEmail';
 
@@ -12,8 +14,12 @@ interface IRequest {
   assessorId: number;
 }
 
+@injectable()
 class CreateClienteService {
-  constructor(private clientesRepository: IClientesRepository) {}
+  constructor(
+    @inject('ClientesRepository')
+    private clientesRepository: IClientesRepository,
+  ) {}
 
   public async execute({
     nome,
@@ -34,8 +40,7 @@ class CreateClienteService {
       throw new AppError('E-mail inválido.');
     }
 
-    const checkCPF = await this.clientesRepository.findByCpf(cpf);
-
+    const checkCPF = await this.clientesRepository.findByCpf(formattedCPF);
     if (checkCPF) {
       throw new AppError('CPF já cadastrado.', 409);
     }
