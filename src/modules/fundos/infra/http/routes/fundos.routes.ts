@@ -1,22 +1,10 @@
 import { Router } from 'express';
-import { container } from 'tsyringe';
 
-import CreateFundoService from '@modules/fundos/services/CreateFundoService';
+import FundosController from '../controllers/FundosControllers';
 
 const fundosRouter = Router();
+const fundosController = new FundosController();
 
-fundosRouter.post('/', async (request, response) => {
-  const { cnpj, nome, rendimentoAnual } = request.body;
-
-  const createFundo = container.resolve(CreateFundoService);
-
-  const fundo = await createFundo.execute({
-    cnpj,
-    nome,
-    rendimentoAnual,
-  });
-
-  return response.json(fundo);
-});
+fundosRouter.post('/', fundosController.create);
 
 export default fundosRouter;

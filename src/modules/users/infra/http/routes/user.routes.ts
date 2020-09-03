@@ -1,20 +1,10 @@
 import { Router } from 'express';
-import { container } from 'tsyringe';
 
-import CreateUserService from '@modules/users/services/CreateUserService';
+import UsersController from '../controllers/UsersController';
 
 const usersRouter = Router();
+const usersController = new UsersController();
 
-usersRouter.post('/', async (request, response) => {
-  const { username, password } = request.body;
-
-  const createUser = container.resolve(CreateUserService);
-
-  const user = await createUser.execute({ username, password });
-
-  delete user.password;
-
-  return response.json(user);
-});
+usersRouter.post('/', usersController.create);
 
 export default usersRouter;

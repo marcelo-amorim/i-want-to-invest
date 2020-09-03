@@ -7,6 +7,7 @@ import AppError from '@shared/errors/AppError';
 import User from '@modules/users/infra/typeorm/entities/User';
 
 import IAssessoresRepository from '@modules/assessores/repositories/IAssessoresRepository';
+import { injectable, inject } from 'tsyringe';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
@@ -19,9 +20,13 @@ interface IResponse {
   token: string;
 }
 
+@injectable()
 class AuthenticateUserService {
   constructor(
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('AssessoresRepository')
     private assessoresRepository: IAssessoresRepository,
   ) {}
 
