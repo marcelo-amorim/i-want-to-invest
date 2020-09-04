@@ -27,6 +27,158 @@
 
 <br>
 
+<h3>Utilizando a aplicação</h3>
+<p>O propósito da aplicação é fornecer o controle do assessor sobre seus clientes. Inicialmente, para criar um assessor deve-se criar primeiramente o seu usuário e só então, cadastrar um novo assessor atrelado ao ID do usuário criado. </p>
+
+## Criando fundo
+
+- **`POST /fundos`**: A rota deve receber o `cnpj`, `nome` e `rendimentoAnual` dentro do corpo da requisição (em formato JSON):
+```
+{ 
+  "cnpj": "82867342000178",
+  "nome": "SAO PAULO PREV RF VGBL",
+  "rendimentoAnual": 6
+}
+```
+Será retornado o fundo cadastrado junto com o codigo para utilização no cadastro das propostas:
+```
+{
+  "cnpj": "82867342000178",
+  "nome": "SAO PAULO PREV RF VGBL",
+  "rendimentoAnual": 6,
+  "id": 6,
+  "createdAt": "2020-09-03T07:07:13.000Z",
+  "updatedAt": "2020-09-03T07:07:13.000Z"
+}
+```
+
+
+## Criando usuário
+
+- **`POST /users`**: A rota deve receber `username` e `password` dentro do corpo da requisição (em formato JSON):
+
+
+```
+{ 
+  "username": "johndoe",
+  "password": "p@$$w0rd"
+}
+```
+
+## Criando asessor
+
+- **`POST /assessores`**: A rota deve receber `nome` e o `userId` de um usuário já cadastrado dentro do corpo da requisição (em formato JSON):
+
+```
+{ 
+  "nome": "ohn Doe",
+  "userId": 6
+}
+```
+No final será retornado o assessor cadastrado.
+
+## Autenticando
+
+- **`POST /users`**: A rota deve receber `username` e `password` dentro do corpo da requisição (em formato JSON) para autenticar um novo usuário:
+
+```
+{ 
+  "username": "johndoe",
+  "password": "p@$$w0rd"
+}
+```
+Será retornado um token JWT para utilização nas requisições seguintes:
+
+## Cadastrando novos clientes
+A rota de clientes faz uso do token do assesor autenticado para cadastrar novos clientes, então, a partir daqui, todas as requisiçes devem conter um `Bearer {token}` na header **Authorization**:
+
+- **`POST /clientes`**: A rota deve receber `nome`, `cpf` e `email` dentro do corpo da requisição (em formato JSON):
+
+```
+{
+  "nome": "Jane Doe",
+  "cpf": "754.818.192-28",
+  "email": "jane@doe.com"
+}
+```
+No final, um novo cliente será cadastrado para o assessor autenticado:
+```
+{
+  "nome": "Jane Doe",
+  "cpf": "75481819228",
+  "email": "jane@doe.com",
+  "assessorId": 1,
+  "id": 10,
+  "createdAt": "2020-09-03T07:06:45.000Z",
+  "updatedAt": "2020-09-03T07:06:45.000Z"
+}
+```
+- **`GET /clientes`**: Traz a lista contendo todos os clientes do assessor autenticado.
+
+- **`GET /clientes/:id`**: Retorna o cliente especificado pelo ID. O cliente só será retornado se pertencer ao assessor autenticado.
+
+## Cadastrando propostas
+
+- **`POST /propostas`**: A rota deve receber `valor`, `tipoPagamento` ('boleto' ou 'debito'), `fundoId` de um fundo já cadastrado e o `clienteId` de um cliente já cadastrado dentro do corpo da requisição (em formato JSON) para criar uma nova proposta para o cliente do assessor autenticado:
+
+```
+{
+  "valor": 100,
+  "tipoPagamento": "boleto",
+  "fundoId": 1,
+  "clienteId": 1
+}
+```
+No final, será retornada a proposta cadastrada contendo um campo `codigo` para ser usado posteriormente no cálculo de rendimentos da proposta:
+```
+{
+  "valor": 100,
+  "tipoPagamento": "boleto",
+  "fundoId": 1,
+  "clienteId": 1,
+  "codigo": 5,
+  "createdAt": "2020-09-03T07:07:10.000Z",
+  "updatedAt": "2020-09-03T07:07:10.000Z"
+}
+```
+- **`GET /propostas/:codigo`**: retorna uma proposta com o código informado.
+
+
+## Cálculo de rendimentos
+
+- **`POST /rendimentos`**: retorna o cálculo de rendimentos de acordo com a `dataInicial`, `proposta` (código da proposta) e `meses` a partir da data inicial:
+```
+{
+  "dataInicial": "2020-09-01",
+  "proposta": 1,
+  "meses": 3
+}
+```
+será retornado o cálculo do rendimento da proposta informada de acordo com as datas enviadas:
+```
+[
+  {
+    "data": "2020-02-01T00:00:00.000Z",
+    "proposta": 1,
+    "valor": 101
+  },
+  {
+    "data": "2020-03-03T01:00:00.000Z",
+    "proposta": 1,
+    "valor": 102.01
+  },
+  {
+    "data": "2020-04-01T01:00:00.000Z",
+    "proposta": 1,
+    "valor": 103.03
+  },
+]
+```
+
+<h3> Recursos e ferramentas </h3>
+
+- [Workspace do Insomnia](https://gist.github.com/marcelo-amorim/842f16d7ba9f3e43a4800f2419b1548a) para testar as requisições.
+- [Diagrama relacional das tabelas](https://dbdiagram.io/d/5f470ed57b2e2f40e9dee63c)
 
 
 
