@@ -34,7 +34,7 @@
 
 - **`POST /fundos`**: A rota deve receber o `cnpj`, `nome` e `rendimentoAnual` dentro do corpo da requisição (em formato JSON):
 ```
-{ 
+{
   "cnpj": "82867342000178",
   "nome": "SAO PAULO PREV RF VGBL",
   "rendimentoAnual": 6
@@ -59,7 +59,7 @@ Será retornado o fundo cadastrado junto com o codigo para utilização no cadas
 
 
 ```
-{ 
+{
   "username": "johndoe",
   "password": "p@$$w0rd"
 }
@@ -70,8 +70,8 @@ Será retornado o fundo cadastrado junto com o codigo para utilização no cadas
 - **`POST /assessores`**: A rota deve receber `nome` e o `userId` de um usuário já cadastrado dentro do corpo da requisição (em formato JSON):
 
 ```
-{ 
-  "nome": "ohn Doe",
+{
+  "nome": "John Doe",
   "userId": 6
 }
 ```
@@ -82,12 +82,25 @@ No final será retornado o assessor cadastrado.
 - **`POST /users`**: A rota deve receber `username` e `password` dentro do corpo da requisição (em formato JSON) para autenticar um novo usuário:
 
 ```
-{ 
+{
   "username": "johndoe",
   "password": "p@$$w0rd"
 }
 ```
 Será retornado um token JWT para utilização nas requisições seguintes:
+
+
+```
+{
+  "user": {
+    "id": 1,
+    "username": "johndoe",
+    "createdAt": "2020-09-04T03:27:40.000Z",
+    "updatedAt": "2020-09-04T03:27:40.000Z"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhc3Nlc3NvcklkIjoxLCJpYXQiOjE1OTkxOTAxMzIsImV4cCI6MTU5OTI3NjUzMiwic3ViIjoiMSJ9.cFC4mpi8Nmt7nIdKgiAI0iQeL0HrUm6itLBvO-EM0P4"
+}
+```
 
 ## Cadastrando novos clientes
 A rota de clientes faz uso do token do assesor autenticado para cadastrar novos clientes, então, a partir daqui, todas as requisiçes devem conter um `Bearer {token}` na header **Authorization**:
@@ -179,7 +192,3 @@ será retornado o cálculo do rendimento da proposta informada de acordo com as 
 
 - [Workspace do Insomnia](https://gist.github.com/marcelo-amorim/842f16d7ba9f3e43a4800f2419b1548a) para testar as requisições.
 - [Diagrama relacional das tabelas](https://dbdiagram.io/d/5f470ed57b2e2f40e9dee63c)
-
-
-
-
