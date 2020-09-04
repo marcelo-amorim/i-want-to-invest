@@ -8,7 +8,7 @@
 - [Express](https://expressjs.com/pt-br/)
 - [MySQL](https://www.mysql.com/)
 - [TypeScript](https://www.typescriptlang.org/)
-- [TSyringe](https://www.typescriptlang.org/)
+- [TSyringe](https://github.com/microsoft/tsyringe)
 - [TypeORM](https://typeorm.io/)
 
 <h3> Configurando o banco de dados </h3>
