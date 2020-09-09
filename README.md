@@ -79,7 +79,7 @@ No final será retornado o assessor cadastrado.
 
 ## Autenticando
 
-- **`POST /users`**: A rota deve receber `username` e `password` dentro do corpo da requisição (em formato JSON) para autenticar um novo usuário:
+- **`POST /session`**: A rota deve receber `username` e `password` dentro do corpo da requisição (em formato JSON) para autenticar um novo usuário:
 
 ```
 {
